@@ -32,19 +32,36 @@ return array(
                         'action'     => 'index',
                     ),
                 ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'category' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => 'category/[:action[/:id]]',
+                            'defaults' => array(
+                                'controller' => 'Admin\Controller\Category',
+                                'action'     => 'Admin\Controller\Index',
+                            ),
+                        ),
+                    ),
+                ),
             ),
         ),
     ),
+
     'controllers' => array(
         'invokables' => array(
-            'Admin\Controller\Index' => 'Admin\Controller\IndexController'
+            'Admin\Controller\Index' => 'Admin\Controller\IndexController',
+            'Admin\Controller\Category' => 'Admin\Controller\CategoryController',
         ),
     ),
+
     'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
     ),
+
     // Placeholder for console routes
     'console' => array(
         'router' => array(
