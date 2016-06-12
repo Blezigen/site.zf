@@ -35,12 +35,12 @@ return array(
                 'may_terminate' => true,
                 'child_routes' => array(
                     'category' => array(
-                        'type'    => 'Segment',
+                        'type'    => 'segment',
                         'options' => array(
                             'route'    => 'category/[:action[/:id]]',
                             'defaults' => array(
-                                'controller' => 'Admin\Controller\Category',
-                                'action'     => 'Admin\Controller\Index',
+                                'controller' => \Admin\Controller\CategoryController::class,
+                                'action'     => 'index',
                             ),
                         ),
                     ),
@@ -50,9 +50,12 @@ return array(
     ),
 
     'controllers' => array(
+        'factories'    => array(
+            \Admin\Controller\CategoryController::class    => \Admin\Controller\Factory\CategoryControllerFactory::class,
+        ),
         'invokables' => array(
             'Admin\Controller\Index' => 'Admin\Controller\IndexController',
-            'Admin\Controller\Category' => 'Admin\Controller\CategoryController',
+            //'Admin\Controller\Category' => \Admin\Controller\CategoryController::class,
         ),
     ),
 
