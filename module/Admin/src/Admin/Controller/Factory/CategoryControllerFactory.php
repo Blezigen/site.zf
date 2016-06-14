@@ -9,15 +9,12 @@ class CategoryControllerFactory implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $controllerLocator)
     {
-        /**
-         * @var ServiceLocatorInterface $serviceLocator
-         */
         $serviceLocator = $controllerLocator->getServiceLocator();
 
-        return new CategoryController(
-            //\Doctrine\ORM\EntityManager::
-            //$serviceLocator->get('config')['application_details']
-            $serviceLocator->get('\Doctrine\ORM\EntityManager')
-        );
+        $result = new CategoryController();
+        
+        $result->setDoctrine($serviceLocator->get('\Doctrine\ORM\EntityManager'));
+
+        return $result;
     }
 }

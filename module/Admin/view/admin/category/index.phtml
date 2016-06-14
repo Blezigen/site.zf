@@ -1,1 +1,57 @@
 <h1>Category</h1>
+
+<?php $flash = $this->flashMessenger()
+    ->setMessageOpenFormat('<div%s> <button type="button" class="close" data-dismiss="alert" area-hidden="true">&times;</button> <ul><li>')
+    ->setMessageSeparatorString('</li><li>')
+    ->setMessageCloseString('</li><ul></div>');
+?>
+<?php echo $flash->render('error',array('alert','alert-dismissable','alert-danger')); ?>
+<?php echo $flash->render('info',array('alert','alert-dismissable','alert-info')); ?>
+<?php echo $flash->render('default',array('alert','alert-dismissable','alert-warning')); ?>
+<?php echo $flash->render('success',array('alert','alert-dismissable','alert-success')); ?>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th class="text-center" width="10">#</th>
+            <th class="text-center" width="170">Ключ</th>
+            <th class="text-left" >Название</th>
+            <th class="text-center" width="10"><i class="fa fa-pencil" aria-hidden="true"></i></th>
+            <th class="text-center" width="10"><i class="fa fa-trash" aria-hidden="true"></i></th>
+        </tr>
+    </thead>
+    <thbody>
+        <?php //$counter = 1; ?>
+        <?php foreach ($categorys as $category) { ?>
+            <tr>
+                <td class="text-center"><?php echo $category->getIdCategory(); ?></td>
+                <td class="text-center"><?php echo $category->getCategoryKey();?></td>
+                <td class="text-left"><?php echo $category->getCategoryName();?></td>
+                <td>
+                    <a class="btn btn-warning" href="edit/<?php echo $category->getIdCategory(); ?>/">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-danger" href="remove/<?php echo $category->getIdCategory(); ?>/">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            <?php //$counter++; ?>
+        <?php } ?>
+    </thbody>
+    <thbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <a href="/admin/category/add/" class="btn btn-primary pull-right">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+    </thbody>
+</table>

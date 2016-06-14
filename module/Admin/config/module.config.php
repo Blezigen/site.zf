@@ -37,7 +37,7 @@ return array(
                     'category' => array(
                         'type'    => 'segment',
                         'options' => array(
-                            'route'    => 'category/[:action[/:id]]',
+                            'route'    => 'category/[:action/][:id/]',
                             'defaults' => array(
                                 'controller' => \Admin\Controller\CategoryController::class,
                                 'action'     => 'index',
