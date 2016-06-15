@@ -34,12 +34,22 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
-                    'category' => array(
+//                    'category' => array(
+//                        'type'    => 'segment',
+//                        'options' => array(
+//                            'route'    => 'category/[:action/][:id/]',
+//                            'defaults' => array(
+//                                'controller' => \Admin\Controller\CategoryController::class,
+//                                'action'     => 'index',
+//                            ),
+//                        ),
+//                    ),
+                    'parser' => array(
                         'type'    => 'segment',
                         'options' => array(
-                            'route'    => 'category/[:action/][:id/]',
+                            'route'    => 'parser/',
                             'defaults' => array(
-                                'controller' => \Admin\Controller\CategoryController::class,
+                                'controller' => 'ParserController',
                                 'action'     => 'index',
                             ),
                         ),
@@ -52,10 +62,12 @@ return array(
     'controllers' => array(
         'factories'    => array(
             \Admin\Controller\CategoryController::class    => \Admin\Controller\Factory\CategoryControllerFactory::class,
+            //'ParserController'  => \Admin\Controller\Factory\ParserControllerFactory::class,
         ),
         'invokables' => array(
             'Admin\Controller\Index' => 'Admin\Controller\IndexController',
             //'Admin\Controller\Category' => \Admin\Controller\CategoryController::class,
+            'ParserController' => \Admin\Controller\ParserController::class,
         ),
     ),
 
