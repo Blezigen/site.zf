@@ -36,6 +36,8 @@ class CategoryController extends BaseController
             $form->setData($request->getPost());
             if($form->isValid()) {
                 $category = new EntityCategory();
+                
+                
                 $category->exchangeArray($form->getData());
                 $dc->persist($category);
                 $dc->flush();

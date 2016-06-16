@@ -49,7 +49,7 @@ return array(
                         'options' => array(
                             'route'    => 'parser/',
                             'defaults' => array(
-                                'controller' => 'ParserController',
+                                'controller' => \Admin\Controller\ParserController::class,
                                 'action'     => 'index',
                             ),
                         ),
@@ -62,12 +62,12 @@ return array(
     'controllers' => array(
         'factories'    => array(
             \Admin\Controller\CategoryController::class    => \Admin\Controller\Factory\CategoryControllerFactory::class,
-            //'ParserController'  => \Admin\Controller\Factory\ParserControllerFactory::class,
+            \Admin\Controller\ParserController::class  => \Admin\Controller\Factory\ParserControllerFactory::class,
         ),
         'invokables' => array(
             'Admin\Controller\Index' => 'Admin\Controller\IndexController',
             //'Admin\Controller\Category' => \Admin\Controller\CategoryController::class,
-            'ParserController' => \Admin\Controller\ParserController::class,
+            //'ParserController' => \Admin\Controller\ParserController::class,
         ),
     ),
 
