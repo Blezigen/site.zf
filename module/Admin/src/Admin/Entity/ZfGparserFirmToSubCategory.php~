@@ -1,0 +1,40 @@
+<?php
+
+namespace Admin\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ZfGparserFirmToSubCategory
+ *
+ * @ORM\Table(name="zf_gparser_firm_to_sub_category")
+ * @ORM\Entity
+ */
+class ZfGparserFirmToSubCategory
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_gparser_firm_to_sub_category", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idGparserFirmToSubCategory;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_gparser_firm", type="integer", nullable=false)
+     */
+    private $idGparserFirm;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_gparser_sub_category", type="integer", nullable=false)
+     */
+    private $idGparserSubCategory;
+
+
+}
+

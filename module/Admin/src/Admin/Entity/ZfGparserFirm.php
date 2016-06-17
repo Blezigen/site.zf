@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ZfGparserFirm
  *
- * @ORM\Table(name="zf_gparser_firm")
+ * @ORM\Table(name="zf_gparser_firm", uniqueConstraints={@ORM\UniqueConstraint(name="firm_external_id", columns={"firm_external_id"})})
  * @ORM\Entity
  */
 class ZfGparserFirm
