@@ -115,7 +115,7 @@ class DoubleGisAPI
                 $this->_resultData[] = $firm;
             }
         }
-        echo substr(" [filtred : ". $this->_resultData)."]";
+        echo " >> ". count($this->_resultData);
         return $this->_resultData;
     }
     public function getContacts($contacts_array){

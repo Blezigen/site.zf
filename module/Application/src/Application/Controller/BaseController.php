@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 
 class BaseController extends AbstractActionController
 {
+    
     /**
      * @var array
      */

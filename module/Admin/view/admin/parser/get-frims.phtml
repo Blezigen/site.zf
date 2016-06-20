@@ -1,0 +1,12 @@
+<?php header('Content-type: text/html; charset=utf-8'); ?>
+
+<?php //var_dump($data); ?>
+<?php foreach ($data as $numeric => $value) { ?>
+<tr class="" data-id="<?php echo $value["id"]; ?>">
+    <td class="text-center"><?php echo $numeric+1;?></td>
+    <td><?php echo $value["name"]; ?></td>
+    <td>
+        <button class="btn btn-default" type="btn">+7 (999) 999-99-99</button>
+    </td>
+</tr>
+<?php } ?>

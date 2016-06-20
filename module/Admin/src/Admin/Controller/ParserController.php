@@ -189,53 +189,150 @@ class ParserController extends BaseController
         return $result;
     }
 
+    public function getRubricsAction(){
+        header('Content-type: application/json; charset=utf-8');
+        $dc = $this->getDoctrine();
+        $request = $this->getRequest();
+        $results = [];
+
+        if ($request->isPost()) {
+            $data = $request->getPost();
+
+            if(isset($data["parent_id"])){
+                $query = $dc->createQuery('SELECT u FROM \Admin\Entity\ZfGparserSubCategory u WHERE u.idGparserCategory = ' . $data["parent_id"]);
+                $sub_rubrics = $query->getResult();
+                $results = [];
+                foreach ($sub_rubrics as $sub_rubric) {
+                    $results[] = ["id" => $sub_rubric->getIdGparserSubCategory(), "label" => $sub_rubric->getCategoryName()];
+                }
+            }
+            else {
+                $query = $dc->createQuery('SELECT u FROM Admin\Entity\ZfGparserCategory u');
+                $rubrics = $query->getResult();
+
+
+                foreach ($rubrics as $rubric) {
+                    $results[] = ["id" => $rubric->getIdGparserCategory(), "label" => $rubric->getCategoryName()];
+                }
+            }
+        }
+
+        $returnData = [
+            "jsonData" => $results
+        ];
+        $viewModel = new \Zend\View\Model\ViewModel($returnData);
+        $viewModel->setTerminal(true);
+        return $viewModel;
+    }
+
+    public function getFrimsAction(){
+        $dc = $this->getDoctrine();
+        $request = $this->getRequest();
+        $results = [];
+
+        if ($request->isPost()) {
+            $data = $request->getPost();
+            $page = $data["page"];
+            if (!isset($page)) {
+                $page = 0;
+            }
+            if (isset($data["rubric_id"])) {
+                $repositorySubCategory = $dc->getRepository('Admin\Entity\ZfGparserSubCategory');
+                $repositoryFTSC = $dc->getRepository('Admin\Entity\ZfGparserFirmToSubCategory');
+                $repositoryFirms = $dc->getRepository('Admin\Entity\ZfGparserFirm');
+
+                $sub_category = $repositorySubCategory->findOneByIdGparserSubCategory($data["rubric_id"]);
+                //$sub_category = new \Admin\Entity\ZfGparserSubCategory();
+                if (isset($sub_category)) {
+                    $firms = $repositoryFTSC->findByIdGparserSubCategory($sub_category->getIdGparserSubCategory());
+                    //$firms = new \Admin\Entity\ZfGparserFirmToSubCategory();
+
+                    foreach ($firms as $value) {
+
+                        $firm = $repositoryFirms->findOneByIdGparserFirm($value->getIdGparserFirm());
+                        //$firm = new \Admin\Entity\ZfGparserFirm();
+                        if (isset($firm)) {
+                            $results[] = [
+                                "id" => $firm->getIdGparserFirm(),
+                                "name" => $firm->getFirmName()
+                            ];
+                        }
+                    }
+                }
+            } else {
+                $query = $dc->createQuery('SELECT u FROM \Admin\Entity\ZfGparserFirm u')
+                    ->setFirstResult($page)
+                    ->setMaxResults(10);
+                $firms = $query->getResult();
+
+                foreach ($firms as $value) {
+                    //$value = new \Admin\Entity\ZfGparserFirm;
+                    if (isset($value)) {
+                        $results[] = [
+                            "id" => $value->getIdGparserFirm(),
+                            "name" => $value->getFirmName()
+                        ];
+                    }
+                }
+            }
+        }
+
+        $returnData = [
+            "data" => $results
+        ];
+        $viewModel = new \Zend\View\Model\ViewModel($returnData);
+        $viewModel->setTerminal(true);
+        return $viewModel;
+    }
+
     public function indexAction()
     {
-
-        header( 'Content-type: text/html; charset=utf-8' );
-        set_time_limit(0);
-        $start = microtime(true);
-        $this->_api = new API();
-        ob_get_contents();
-        header('charset="UTF-8"');
-//        $results =  $this->_api->getContent("http://parselab.org/key/key.php?project=8&key=Rr0iM8GeMX9jUiCQqn73PiMHlxGvDlfcK2RvpRMiTw0jeGNJMp")->categories;
-//        $this->fillCategory($results);
-       // print_r($results);
-//        foreach ($r as $category){
 //
-//        }
-       // $contentJSON = json_decode($this->getContent($this->getLink("2955607514553869")));
-
-        //print_r($contentJSON); die;
+//        header( 'Content-type: text/html; charset=utf-8' );
+//        set_time_limit(0);
+//        $start = microtime(true);
 //        $this->_api = new API();
-        $microOperation = microtime(true);
-        $categorys = $this->getAllSubCategoryInCategory("2955607514546178");//array("2955607514553869","2955607514546585");
-        echo 'Forming categories id:'.$categorys." заняло ".(microtime(true) - $microOperation).' сек. <br/>';
-        flush();
-        ob_flush();
-        sleep(1);
-
-          foreach ($categorys as $category) {
-              $microOperation = microtime(true);
-              echo "[Count : ";
-            $result = $this->_api->getFirmsByCategory($category["id"]);
-//              var_dump($result); die;
-              echo ']   JSON OK:'.(microtime(true) - $microOperation).' сек. >>> ';
-              flush();
-              ob_flush();
-              sleep(1);
-//              header('Content-Type: text/plain; charset="UTF-8"');
-//              print_r($result); die;
-            $microOperation = microtime(true);
-//              echo "\"".$category["name"]."\"";
-            if($this->insertFirms($result, $category["id"])){
-                //echo "Парсер работает";
-            }
-            echo " заняло [".(microtime(true) - $microOperation)." сек.] \"{$category["name"]}\" <br/>";
-              flush();
-              ob_flush();
-              sleep(1);
-        }
-        echo 'Время выполнения всего скрипта: '.(microtime(true) - $start).' сек.';
+//        ob_get_contents();
+//        header('charset="UTF-8"');
+////        die;
+////        $results =  $this->_api->getContent("http://parselab.org/key/key.php?project=8&key=Rr0iM8GeMX9jUiCQqn73PiMHlxGvDlfcK2RvpRMiTw0jeGNJMp")->categories;
+////        $this->fillCategory($results);
+//       // print_r($results);
+////        foreach ($r as $category){
+////
+////        }
+//       // $contentJSON = json_decode($this->getContent($this->getLink("2955607514553869")));
+//
+//        //print_r($contentJSON); die;
+////        $this->_api = new API();
+//        $microOperation = microtime(true);
+//        $categorys = $this->getAllSubCategoryInCategory('2955607514546181');//array("2955607514553869","2955607514546585");
+//        echo 'Forming categories id:'.$categorys." заняло ".(microtime(true) - $microOperation).' сек. <br/>';
+//        flush();
+//        ob_flush();
+//        sleep(1);
+//
+//         foreach ($categorys as $category) {
+//              $microOperation = microtime(true);
+//              echo "[Count : ";
+//            $result = $this->_api->getFirmsByCategory($category["id"]);
+////              var_dump($result); die;
+//              echo ']   JSON OK:'.(microtime(true) - $microOperation).' сек. >>> ';
+//              flush();
+//              ob_flush();
+//              sleep(1);
+////              header('Content-Type: text/plain; charset="UTF-8"');
+////              print_r($result); die;
+//            $microOperation = microtime(true);
+////              echo "\"".$category["name"]."\"";
+//            if($this->insertFirms($result, $category["id"])){
+//                //echo "Парсер работает";
+//            }
+//            echo " заняло [".(microtime(true) - $microOperation)." сек.] \"{$category["name"]}\" <br/>";
+//              flush();
+//              ob_flush();
+//              sleep(1);
+//        }
+//        echo 'Время выполнения всего скрипта: '.(microtime(true) - $start).' сек.';
     }
 }
